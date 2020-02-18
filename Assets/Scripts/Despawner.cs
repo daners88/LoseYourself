@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class Despawner : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class Obstacle : MonoBehaviour
         Spheres temp = other.GetComponent<Spheres>();
         if(temp != null)
         {
-            GameManager.Instance.gameover = true;
+            Destroy(transform.parent.gameObject);
         }
     }
 }

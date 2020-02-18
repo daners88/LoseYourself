@@ -11,8 +11,11 @@ public class CanvasManager : MonoBehaviour
     public List<Sprite> backgroundAnimation = null;
     int bgImageStep = 0;
     float timeDelay = 0;
-
+    public GameObject gameObjectsParent = null;
+    public GameObject player = null;
     public static CanvasManager Instance;
+    [SerializeField]
+    private GameObject trackPrefab = null;
 
     private void Awake()
     {
@@ -27,6 +30,7 @@ public class CanvasManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player.GetComponent<Rigidbody>().useGravity = false;
         music = GetComponent<AudioSource>();
         bgImage.rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
         bgImage.texture = backgroundAnimation[bgImageStep].texture;
@@ -67,6 +71,8 @@ public class CanvasManager : MonoBehaviour
     {
         titleScreen.SetActive(false);
         GameManager.Instance.running = true;
+        Instantiate(trackPrefab, gameObjectsParent.transform.position, Quaternion.identity, gameObjectsParent.transform);
+        player.GetComponent<Rigidbody>().useGravity = true; ;
     }
 
     public void BackToTitle()

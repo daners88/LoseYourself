@@ -14,7 +14,7 @@ public class Track : MonoBehaviour
     {
         foreach (var spot in obstacleSpots)
         {
-            if (rand.Next(0, 10) > 5 && obstacles.Count > 0)
+            if (obstacles.Count > 0)
             {
                 Instantiate(obstacles[rand.Next(0, obstacles.Count)], spot.transform.position, Quaternion.identity, spot.transform);
             }

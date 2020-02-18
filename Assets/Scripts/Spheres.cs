@@ -29,16 +29,24 @@ public class Spheres : MonoBehaviour
             {
                 rb.AddForce(0, 0, gameSpeed - rb.velocity.z);
             }
-            if(Input.GetKey(KeyCode.Space) && !jumped)
+            if (rb.velocity.y > 0)
             {
-                rb.AddForce(0, 20, 0);
+                rb.AddForce(0, -rb.velocity.y, 0);
             }
-            if(rb.velocity.y  < 0.5)
-            {
-                jumped = false;
-            }
-
-            Debug.Log(rb.velocity.y);
+            //if(Input.GetKey(KeyCode.Space) && !jumped)
+            //{
+            //    rb.AddForce(0, 20, 0);
+            //    jumped = true;
+            //}
+            //if(rb.velocity.y  < 0.5)
+            //{
+            //    jumped = false;
+            //}
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
         }
     }
 }

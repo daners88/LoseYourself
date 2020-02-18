@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class ObstacleCounter : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -19,10 +19,10 @@ public class Obstacle : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Spheres temp = other.GetComponent<Spheres>();
-        if(temp != null)
+        if (temp != null)
         {
-            Debug.Log("obst hit");
-            GameManager.Instance.ObstacleHitIncrease();
+            Debug.Log("obst count");
+            GameManager.Instance.ObstacleCountIncrease();
         }
     }
 }

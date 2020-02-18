@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class CanvasManager : MonoBehaviour
 {
+    bool firstTime = true;
     public UnityEngine.UI.Toggle musicToggle = null;
     public GameObject titleScreen = null;
+    public GameObject gamePlay = null;
     AudioSource music;
     public UnityEngine.UI.RawImage bgImage = null;
     public List<Sprite> backgroundAnimation = null;
@@ -70,14 +72,45 @@ public class CanvasManager : MonoBehaviour
     public void StartGame()
     {
         titleScreen.SetActive(false);
+        gamePlay.SetActive(true);
         GameManager.Instance.running = true;
-        Instantiate(trackPrefab, gameObjectsParent.transform.position, Quaternion.identity, gameObjectsParent.transform);
-        player.GetComponent<Rigidbody>().useGravity = true; ;
+        if(firstTime)
+        {
+            Instantiate(trackPrefab, gameObjectsParent.transform.position, Quaternion.identity, gameObjectsParent.transform);
+            firstTime = false;
+        }
+        else
+        {
+            Instantiate(trackPrefab, GameManager.Instance.spawnPos1, Quaternion.identity, gameObjectsParent.transform);
+            Instantiate(trackPrefab, GameManager.Instance.spawnPos2, Quaternion.identity, gameObjectsParent.transform);
+        }
+        player.GetComponent<Rigidbody>().useGravity = true;
     }
 
     public void BackToTitle()
     {
         titleScreen.SetActive(true);
+        gamePlay.SetActive(false);
         GameManager.Instance.running = false;
+        GameManager.Instance.ResetGame();
+        player.GetComponent<Rigidbody>().useGravity = false;
+        foreach(Transform child in gameObjectsParent.transform)
+        {
+            Spheres temp = child.gameObject.GetComponent<Spheres>();
+            if (temp == null)
+            {
+                Destroy(child.gameObject);
+            }
+            else
+            {
+                temp.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                temp.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            }
+        }
+    }
+
+    public void SetBGActive(bool b)
+    {
+        bgImage.gameObject.SetActive(b);
     }
 }

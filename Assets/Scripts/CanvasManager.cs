@@ -8,6 +8,8 @@ public class CanvasManager : MonoBehaviour
     public UnityEngine.UI.Toggle musicToggle = null;
     public GameObject titleScreen = null;
     public GameObject gamePlay = null;
+    public GameObject firstSlide = null;
+    public GameObject lastSlide = null;
     AudioSource music;
     public UnityEngine.UI.RawImage bgImage = null;
     public List<Sprite> backgroundAnimation = null;
@@ -42,6 +44,14 @@ public class CanvasManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKey(KeyCode.P))
+        {
+            AdvanceToFinalSlide();
+        }
+        else
+        {
+
+        }
         timeDelay += Time.deltaTime;
         if (bgImageStep == 40)
         {
@@ -69,6 +79,34 @@ public class CanvasManager : MonoBehaviour
         }
     }
 
+    public void AdvanceToGame()
+    {
+        firstSlide.SetActive(false);
+        titleScreen.SetActive(true);
+    }
+
+    public void AdvanceToFinalSlide()
+    {
+        lastSlide.SetActive(true);
+        gamePlay.SetActive(false);
+        GameManager.Instance.running = false;
+        GameManager.Instance.ResetGame();
+        player.GetComponent<Rigidbody>().useGravity = false;
+        foreach (Transform child in gameObjectsParent.transform)
+        {
+            Spheres temp = child.gameObject.GetComponent<Spheres>();
+            if (temp == null)
+            {
+                Destroy(child.gameObject);
+            }
+            else
+            {
+                temp.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                temp.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            }
+        }
+    }
+
     public void StartGame()
     {
         titleScreen.SetActive(false);
@@ -91,6 +129,7 @@ public class CanvasManager : MonoBehaviour
     {
         titleScreen.SetActive(true);
         gamePlay.SetActive(false);
+        lastSlide.SetActive(false);
         GameManager.Instance.running = false;
         GameManager.Instance.ResetGame();
         player.GetComponent<Rigidbody>().useGravity = false;
